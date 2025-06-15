@@ -159,7 +159,7 @@ function main() {
         .getElementById('resetBtn')
         .addEventListener('click', handleResetClick);
     document
-        .getElementById('undoBtn')
+        .getElementById('takeback')
         .addEventListener('click', handleUndoClick);
 
 

@@ -1,7 +1,14 @@
 body {
-  font-family: sans-serif;
-  text-align: center;
-  margin-top: 30px;
+    font-family: sans-serif;
+    text-align: center;
+    margin-top: 30px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 #board {
@@ -10,31 +17,24 @@ body {
 }
 
 #fen {
-  margin-top: 5px;
-  font-family: monospace;
-  font-size: 14px;
-  color: #444;
+    margin-top: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #444;
 }
 
 #pgn {
-  margin-top: 5px;
-  font-family: monospace;
-  font-size: 14px;
-  color: #444;
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-#resetBtn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+    margin-top: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #444;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 #status {
-  margin-top: 10px;
+    margin-top: 10px;
 }
