@@ -1,4 +1,4 @@
-let game, board;
+let game, board, human, book;
 
 
 // handle functions
