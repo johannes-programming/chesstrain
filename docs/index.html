@@ -2,35 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Play Chess Against Yourself</title>
+  <title>Self-Play Chess</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      background: #eee;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #f0f0f0;
     }
+
     #board {
       width: 500px;
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
+
+  <!-- Chessboard.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css">
 </head>
 <body>
 
 <div id="board"></div>
 
+<!-- Chess.js (game logic) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+
+<!-- Chessboard.js (board UI) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
+
 <script>
   const game = new Chess();
 
   const board = Chessboard('board', {
     draggable: true,
     position: 'start',
-    onDragStart: function (source, piece, position, orientation) {
+    onDragStart: function (source, piece) {
       if (game.game_over()) return false;
 
       if ((game.turn() === 'w' && piece.startsWith('b')) ||
@@ -42,7 +49,7 @@
       const move = game.move({
         from: source,
         to: target,
-        promotion: 'q' // Always promote to queen for simplicity
+        promotion: 'q'
       });
 
       if (move === null) return 'snapback';
