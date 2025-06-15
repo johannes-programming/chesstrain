@@ -9,6 +9,13 @@ body {
   margin: auto;
 }
 
+#fen {
+  margin-top: 5px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #444;
+}
+
 #status {
   margin-top: 10px;
 }

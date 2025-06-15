@@ -9,7 +9,12 @@ function updateStatus() {
     else if (game.in_draw()) msg = "Draw!";
     else msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
     statusEl.textContent = msg;
+
+    // update FEN display
+    const fenEl = document.getElementById('fen');
+    fenEl.textContent = `FEN: ${game.fen()}`;
 }
+
 
 const board = Chessboard('board', {
     draggable: true,
