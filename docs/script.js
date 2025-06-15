@@ -1,6 +1,6 @@
-
 let game = new Chess();
 const statusEl = document.getElementById('status');
+const fenEl = document.getElementById('fen');
 
 function updateStatus() {
     const turn = game.turn() === 'w' ? 'White' : 'Black';
@@ -9,37 +9,46 @@ function updateStatus() {
     else if (game.in_draw()) msg = "Draw!";
     else msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
     statusEl.textContent = msg;
-
-    // update FEN display
-    const fenEl = document.getElementById('fen');
     fenEl.textContent = `FEN: ${game.fen()}`;
 }
 
+function handleDragStart(source, piece, position, orientation) {
+    if (
+        game.game_over() ||
+        (game.turn() === 'w' && piece.startsWith('b')) ||
+        (game.turn() === 'b' && piece.startsWith('w'))
+    ) {
+        return false;
+    }
+}
+
+function handleDrop(source, target) {
+    const move = game.move({ from: source, to: target, promotion: 'q' });
+    if (!move) return 'snapback';
+    updateStatus();
+}
+
+function handleSnapEnd() {
+    board.position(game.fen());
+}
+
+function handleResetClick() {
+    game.reset();
+    board.start();
+    updateStatus();
+}
 
 const board = Chessboard('board', {
     draggable: true,
     position: 'start',
     pieceTheme: '/img/pieces/{piece}.png',
-    onDragStart: (src, piece) => {
-    if (
-        game.game_over() ||
-        (game.turn() === 'w' && piece.startsWith('b')) ||
-        (game.turn() === 'b' && piece.startsWith('w'))
-    ) return false;
-    },
-    onDrop: (src, dst) => {
-    const move = game.move({ from: src, to: dst, promotion: 'q' });
-    if (!move) return 'snapback';
-    updateStatus();
-    },
-    onSnapEnd: () => board.position(game.fen())
+    onDragStart: handleDragStart,
+    onDrop: handleDrop,
+    onSnapEnd: handleSnapEnd
 });
 
 updateStatus();
 
-// 🔁 Reset Button Logic
-document.getElementById('resetBtn').addEventListener('click', () => {
-    game.reset();
-    board.start();
-    updateStatus();
-});
+document
+    .getElementById('resetBtn')
+    .addEventListener('click', handleResetClick);
