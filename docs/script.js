@@ -9,7 +9,9 @@ function handleUndoClick() {
         update(); // update status, FEN, PGN
     }
 }
-
+function handleFlipClick() {
+    board.flip();
+}
 function handleOnDragStart(source, piece, position, orientation) {
     if (
         game.game_over() ||
@@ -156,11 +158,15 @@ function main() {
     });
 
     document
-        .getElementById('resetBtn')
+        .getElementById('reset')
         .addEventListener('click', handleResetClick);
     document
         .getElementById('takeback')
         .addEventListener('click', handleUndoClick);
+    document
+        .getElementById('flipBtn')
+        .addEventListener('click', handleFlipClick);
+
 
 
     update();
