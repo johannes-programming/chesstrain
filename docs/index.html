@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
   <title>Self‑Play Chess</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link
     rel="stylesheet"
-    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
-    integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
+    href="https://cdn.jsdelivr.net/npm/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
     crossorigin="anonymous"
   />
   <style>
@@ -17,28 +16,22 @@
   </style>
 </head>
 <body>
-  <h1>Play Against Yourself</h1>
+  <h1>Play Chess Against Yourself</h1>
   <div id="board"></div>
   <div id="status"></div>
 
-  <!-- jQuery (required for chessboard.js) -->
-  <script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJ+0GwyE85Kl6A0YcZc6odc11G6WnXwTJOe+k="
-    crossorigin="anonymous"
-  ></script>
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
 
   <!-- chessboard.js -->
   <script
-    src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
-    integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+    src="https://cdn.jsdelivr.net/npm/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
     crossorigin="anonymous"
   ></script>
 
-  <!-- chess.js -->
+  <!-- chess.js compatible build (v0.12.1) -->
   <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
-    integrity="sha512-+R3+c1wOfbvXJImuVPW0ePc8M5SVlfYkEQzI7BI/eg/4Um6ouGCa/NiR6LvRjY+SnQwr6+oY6jJNkGl0sY2fIw=="
+    src="https://cdn.jsdelivr.net/npm/chess.js@0.12.1/chess.min.js"
     crossorigin="anonymous"
   ></script>
 
@@ -47,13 +40,11 @@
     const statusEl = document.getElementById('status');
 
     function updateStatus() {
-      let msg;
       const turn = game.turn() === 'w' ? 'White' : 'Black';
+      let msg;
       if (game.in_checkmate()) msg = `Checkmate – ${turn} loses.`;
       else if (game.in_draw()) msg = "Draw!";
-      else {
-        msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
-      }
+      else msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
       statusEl.textContent = msg;
     }
 
@@ -61,10 +52,11 @@
       draggable: true,
       position: 'start',
       onDragStart: (src, piece) => {
-        if (game.game_over() ||
+        if (
+          game.game_over() ||
           (game.turn() === 'w' && piece.startsWith('b')) ||
           (game.turn() === 'b' && piece.startsWith('w'))
-        ) return false; // invalid drag
+        ) return false;
       },
       onDrop: (src, dst) => {
         const move = game.move({ from: src, to: dst, promotion: 'q' });
