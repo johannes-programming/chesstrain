@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Play Chess Against Yourself</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f0f0;
+    }
+    #board {
+      width: 500px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+</head>
+<body>
+
+<div id="board"></div>
+
+<script src="https://unpkg.com/chess.js@1.0.0-beta.1/chess.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script>
+  const board = Chessboard('board', {
+    draggable: true,
+    position: 'start',
+    onDragStart: (source, piece, position, orientation) => {
+      if (game.game_over()) return false;
+      if ((game.turn() === 'w' && piece.startsWith('b')) ||
+          (game.turn() === 'b' && piece.startsWith('w'))) {
+        return false;
+      }
+    },
+    onDrop: (source, target, piece, newPos, oldPos, orientation) => {
+      const move = game.move({
+        from: source,
+        to: target,
+        promotion: 'q' // Always promote to queen for simplicity
+      });
+
+      if (move === null) return 'snapback';
+    },
+    onSnapEnd: () => {
+      board.position(game.fen());
+    }
+  });
+
+  const game = new Chess();
+</script>
+
+</body>
+</html>
