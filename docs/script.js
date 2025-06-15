@@ -1,4 +1,4 @@
-let game, board;
+let game, board, human, book;
 
 
 // handle functions
@@ -135,23 +135,21 @@ function throwFENError() {
 // core functions
 
 function update() {
-    const statusEl = document.getElementById('status');
-    const fenEl = document.getElementById('fen');
-    const pgnEl = document.getElementById('pgn');
-
-
-    statusEl.textContent = makeMsg(game);
-    fenEl.textContent = `FEN: ${game.fen()}`;
-    pgnEl.textContent = `PGN: ${game.pgn()}`;
+    document.getElementById('status').textContent = makeMsg(game);
+    document.getElementById('fen').textContent = `FEN: ${game.fen()}`;
+    document.getElementById('pgn').textContent = `PGN: ${game.pgn()}`;
 }
 
-function main() {
+
+function initGame() {
     game = new Chess();
+    human = Math.random() < 0.5 ? 'w' : 'b';
 
     board = Chessboard('board', {
         draggable: true,
         position: 'start',
         pieceTheme: '/img/pieces/{piece}.png',
+        orientation: human === 'w' ? 'white' : 'black',
         onDragStart: handleOnDragStart,
         onDrop: handleOnDrop,
         onSnapEnd: handleOnSnapEnd
@@ -167,10 +165,13 @@ function main() {
         .getElementById('mirror')
         .addEventListener('click', handleFlipClick);
 
-
-
     update();
 }
 
-// 👇 Start the app
+
+async function main() {
+    book = await fetch('/cfg.json').then(res => res.json());
+    initGame();
+}
+
 main();
