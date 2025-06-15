@@ -16,26 +16,29 @@
       width: 500px;
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
 </head>
 <body>
 
 <div id="board"></div>
 
-<script src="https://unpkg.com/chess.js@1.0.0-beta.1/chess.js"></script>
-<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
 <script>
+  const game = new Chess();
+
   const board = Chessboard('board', {
     draggable: true,
     position: 'start',
-    onDragStart: (source, piece, position, orientation) => {
+    onDragStart: function (source, piece, position, orientation) {
       if (game.game_over()) return false;
+
       if ((game.turn() === 'w' && piece.startsWith('b')) ||
           (game.turn() === 'b' && piece.startsWith('w'))) {
         return false;
       }
     },
-    onDrop: (source, target, piece, newPos, oldPos, orientation) => {
+    onDrop: function (source, target) {
       const move = game.move({
         from: source,
         to: target,
@@ -44,12 +47,10 @@
 
       if (move === null) return 'snapback';
     },
-    onSnapEnd: () => {
+    onSnapEnd: function () {
       board.position(game.fen());
     }
   });
-
-  const game = new Chess();
 </script>
 
 </body>
