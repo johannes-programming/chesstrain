@@ -1,20 +1,17 @@
-let game, board, human, book;
+let game, board, cfg;
 
 
 // handle functions
-function handleUndoClick() {
-    const move = game.undo(); // undo last move
+function handleTakebackClick() {
+    const move = game.takeback(); // takeback last move
     if (move) {
         board.position(game.fen()); // update board position
         update(); // update status, FEN, PGN
     }
 }
-function handleFlipClick() {
-    const currentOrientation = board.orientation();
-    const newOrientation = currentOrientation === 'white' ? 'black' : 'white';
-    board.orientation(newOrientation);
+function handleMirror() {
+    setOrientation(!getOrientation());
 }
-
 function handleOnDragStart(source, piece, position, orientation) {
     if (
         game.game_over() ||
@@ -70,6 +67,16 @@ function mirrorSquaring(input) {
         .join('');
 }
 
+
+// getters
+function getOrientation(){
+    return board.orientation() !== "black";    
+}
+
+// setters
+function setOrientation(value){
+    board.orientation(value ? "white" : "black");
+}
 
 // make functions
 function makeMsg(game){
@@ -165,10 +172,10 @@ function main() {
         .addEventListener('click', handleResetClick);
     document
         .getElementById('takeback')
-        .addEventListener('click', handleUndoClick);
+        .addEventListener('click', handleTakebackClick);
     document
         .getElementById('mirror')
-        .addEventListener('click', handleFlipClick);
+        .addEventListener('click', handleMirror);
 
 
 
