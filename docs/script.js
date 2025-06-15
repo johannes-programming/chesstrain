@@ -3,6 +3,8 @@ let game, board;
 function updateStatus() {
     const statusEl = document.getElementById('status');
     const fenEl = document.getElementById('fen');
+    const pgnEl = document.getElementById('pgn');
+
     const turn = game.turn() === 'w' ? 'White' : 'Black';
     let msg;
 
@@ -12,7 +14,9 @@ function updateStatus() {
 
     statusEl.textContent = msg;
     fenEl.textContent = `FEN: ${game.fen()}`;
+    pgnEl.textContent = `PGN: ${game.pgn()}`;
 }
+
 
 function handleDragStart(source, piece, position, orientation) {
     if (
