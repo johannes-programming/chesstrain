@@ -1,4 +1,5 @@
-const game = new Chess();
+
+let game = new Chess();
 const statusEl = document.getElementById('status');
 
 function updateStatus() {
@@ -30,3 +31,10 @@ const board = Chessboard('board', {
 });
 
 updateStatus();
+
+// 🔁 Reset Button Logic
+document.getElementById('resetBtn').addEventListener('click', () => {
+    game.reset();
+    board.start();
+    updateStatus();
+});
