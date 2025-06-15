@@ -164,7 +164,7 @@ function main() {
         .getElementById('takeback')
         .addEventListener('click', handleUndoClick);
     document
-        .getElementById('flipBtn')
+        .getElementById('mirror')
         .addEventListener('click', handleFlipClick);
 
 
