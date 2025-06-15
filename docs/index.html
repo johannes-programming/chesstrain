@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Self‑Play Chess</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
     crossorigin="anonymous"
   />
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 30px }
-    #board { width: 400px; margin: auto }
-    #status { margin-top: 10px }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 30px;
+    }
+    #board {
+      width: 400px;
+      margin: auto;
+    }
+    #status {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -21,7 +30,10 @@
   <div id="status"></div>
 
   <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+    crossorigin="anonymous"
+  ></script>
 
   <!-- chessboard.js -->
   <script
@@ -29,7 +41,7 @@
     crossorigin="anonymous"
   ></script>
 
-  <!-- chess.js compatible build (v0.12.1) -->
+  <!-- chess.js -->
   <script
     src="https://cdn.jsdelivr.net/npm/chess.js@0.12.1/chess.min.js"
     crossorigin="anonymous"
@@ -51,6 +63,7 @@
     const board = Chessboard('board', {
       draggable: true,
       position: 'start',
+      pieceTheme: 'img/pieces/{piece}.png',
       onDragStart: (src, piece) => {
         if (
           game.game_over() ||
