@@ -2,6 +2,14 @@ let game, board;
 
 
 // handle functions
+function handleUndoClick() {
+    const move = game.undo(); // undo last move
+    if (move) {
+        board.position(game.fen()); // update board position
+        update(); // update status, FEN, PGN
+    }
+}
+
 function handleOnDragStart(source, piece, position, orientation) {
     if (
         game.game_over() ||
@@ -150,6 +158,10 @@ function main() {
     document
         .getElementById('resetBtn')
         .addEventListener('click', handleResetClick);
+    document
+        .getElementById('undoBtn')
+        .addEventListener('click', handleUndoClick);
+
 
     update();
 }
