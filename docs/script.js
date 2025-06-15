@@ -1,13 +1,15 @@
-let game = new Chess();
-const statusEl = document.getElementById('status');
-const fenEl = document.getElementById('fen');
+let game, board;
 
 function updateStatus() {
+    const statusEl = document.getElementById('status');
+    const fenEl = document.getElementById('fen');
     const turn = game.turn() === 'w' ? 'White' : 'Black';
     let msg;
+
     if (game.in_checkmate()) msg = `Checkmate – ${turn} loses.`;
     else if (game.in_draw()) msg = "Draw!";
     else msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
+
     statusEl.textContent = msg;
     fenEl.textContent = `FEN: ${game.fen()}`;
 }
@@ -38,17 +40,24 @@ function handleResetClick() {
     updateStatus();
 }
 
-const board = Chessboard('board', {
-    draggable: true,
-    position: 'start',
-    pieceTheme: '/img/pieces/{piece}.png',
-    onDragStart: handleDragStart,
-    onDrop: handleDrop,
-    onSnapEnd: handleSnapEnd
-});
+function main() {
+    game = new Chess();
 
-updateStatus();
+    board = Chessboard('board', {
+        draggable: true,
+        position: 'start',
+        pieceTheme: '/img/pieces/{piece}.png',
+        onDragStart: handleDragStart,
+        onDrop: handleDrop,
+        onSnapEnd: handleSnapEnd
+    });
 
-document
-    .getElementById('resetBtn')
-    .addEventListener('click', handleResetClick);
+    document
+        .getElementById('resetBtn')
+        .addEventListener('click', handleResetClick);
+
+    updateStatus();
+}
+
+// 👇 Start the app
+main();
