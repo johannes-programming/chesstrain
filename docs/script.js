@@ -72,6 +72,9 @@ function mirrorSquaring(input) {
 function getOrientation(){
     return board.orientation() !== "black";    
 }
+function getTurn(){
+    return game.turn() !== 'b';
+}
 
 // setters
 function setOrientation(value){
@@ -80,7 +83,7 @@ function setOrientation(value){
 
 // make functions
 function makeMsg(game){
-    const turn = game.turn() === 'w' ? 'White' : 'Black';
+    const turn = getTurn() ? 'White' : 'Black';
     let msg;
 
     if (game.in_checkmate()) {
@@ -127,13 +130,6 @@ function makeFENWhite(fen) {
     return parts.join(' ');
 }
 
-
-// boolean functions
-function isWhitesTurn(fen) {
-    if (typeof fen !== 'string') {throwFENError();}
-    const parts = fen.trim().split(' ');
-    return parts[1] === 'w';
-}
 
 // error functions
 function throwFENError() {
