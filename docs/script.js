@@ -14,7 +14,7 @@ function updateStatus() {
 const board = Chessboard('board', {
     draggable: true,
     position: 'start',
-    pieceTheme: 'img/pieces/{piece}.png',
+    pieceTheme: '/img/pieces/{piece}.png',
     onDragStart: (src, piece) => {
     if (
         game.game_over() ||
