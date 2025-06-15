@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#board {
+  width: 400px;
+  margin: auto;
+}
+
+#status {
+  margin-top: 10px;
+}
+
+#resetBtn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
