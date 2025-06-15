@@ -10,8 +10,11 @@ function handleUndoClick() {
     }
 }
 function handleFlipClick() {
-    board.flip();
+    const currentOrientation = board.orientation();
+    const newOrientation = currentOrientation === 'white' ? 'black' : 'white';
+    board.orientation(newOrientation);
 }
+
 function handleOnDragStart(source, piece, position, orientation) {
     if (
         game.game_over() ||
