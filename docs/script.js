@@ -1,4 +1,3 @@
-
 const game = new Chess();
 const statusEl = document.getElementById('status');
 
