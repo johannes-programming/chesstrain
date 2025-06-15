@@ -3,80 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play Chess Against Yourself</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" integrity="sha512-qjKcoAaD9NPa3Rk8UNQoGi75aWy8MZ/kL9h9k+wRmMrr5A+b7UQ7Uqsk2fGvAyxthf6/UlUlkkz+U8UeI2cKjw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Self‑Play Chess</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+    integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
+    crossorigin="anonymous"
+  />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 30px;
-    }
-    #board {
-      width: 400px;
-      margin: auto;
-    }
-    #status {
-      margin-top: 15px;
-    }
+    body { font-family: sans-serif; text-align: center; margin-top: 30px }
+    #board { width: 400px; margin: auto }
+    #status { margin-top: 10px }
   </style>
 </head>
 <body>
-  <h1>Play Chess Against Yourself</h1>
+  <h1>Play Against Yourself</h1>
   <div id="board"></div>
   <div id="status"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js" integrity="sha512-XFZHvXWZ1GmFcUkpO1zIrOBAvrNGm9sZad0SRA04h3ZpdxZixO4oRns93ZVf3KEXqEIlPQ+xZgLSA3yO2eae1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js" integrity="sha512-JNq+vL63M2n8NLvwbE3dKn3gIW5iDnNdeQvWaBkmeYdz2AAWiEYxhghH9Q9yMZw2h6vqHQg07VvJJrHCFVIB1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- jQuery (required for chessboard.js) -->
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJ+0GwyE85Kl6A0YcZc6odc11G6WnXwTJOe+k="
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- chessboard.js -->
+  <script
+    src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
+    integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- chess.js -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+    integrity="sha512-+R3+c1wOfbvXJImuVPW0ePc8M5SVlfYkEQzI7BI/eg/4Um6ouGCa/NiR6LvRjY+SnQwr6+oY6jJNkGl0sY2fIw=="
+    crossorigin="anonymous"
+  ></script>
 
   <script>
-    const boardElement = document.getElementById("board");
-    const statusElement = document.getElementById("status");
-
     const game = new Chess();
+    const statusEl = document.getElementById('status');
 
-    const onDragStart = (source, piece, position, orientation) => {
-      if (game.game_over() ||
-          (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-          (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-        return false;
+    function updateStatus() {
+      let msg;
+      const turn = game.turn() === 'w' ? 'White' : 'Black';
+      if (game.in_checkmate()) msg = `Checkmate – ${turn} loses.`;
+      else if (game.in_draw()) msg = "Draw!";
+      else {
+        msg = `${turn} to move${game.in_check() ? ' (in check!)' : ''}`;
       }
-    };
-
-    const onDrop = (source, target) => {
-      const move = game.move({ from: source, to: target, promotion: 'q' });
-      if (move === null) return 'snapback';
-      updateStatus();
-    };
-
-    const onSnapEnd = () => {
-      board.position(game.fen());
-    };
-
-    const updateStatus = () => {
-      let status = '';
-      const moveColor = game.turn() === 'w' ? 'White' : 'Black';
-
-      if (game.in_checkmate()) {
-        status = `Game over, ${moveColor} is in checkmate.`;
-      } else if (game.in_draw()) {
-        status = 'Game over, drawn position.';
-      } else {
-        status = `${moveColor} to move.`;
-
-        if (game.in_check()) {
-          status += ` ${moveColor} is in check.`;
-        }
-      }
-
-      statusElement.innerHTML = status;
-    };
+      statusEl.textContent = msg;
+    }
 
     const board = Chessboard('board', {
       draggable: true,
       position: 'start',
-      onDragStart: onDragStart,
-      onDrop: onDrop,
-      onSnapEnd: onSnapEnd
+      onDragStart: (src, piece) => {
+        if (game.game_over() ||
+          (game.turn() === 'w' && piece.startsWith('b')) ||
+          (game.turn() === 'b' && piece.startsWith('w'))
+        ) return false; // invalid drag
+      },
+      onDrop: (src, dst) => {
+        const move = game.move({ from: src, to: dst, promotion: 'q' });
+        if (!move) return 'snapback';
+        updateStatus();
+      },
+      onSnapEnd: () => board.position(game.fen())
     });
 
     updateStatus();
